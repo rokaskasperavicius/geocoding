@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Map, Marker, ZoomControl, Overlay } from 'pigeon-maps'
-import { stamenTerrain } from 'pigeon-maps/providers'
+import { osm } from 'pigeon-maps/providers'
 import { useDebounce } from 'use-debounce'
 
 export const App = () => {
@@ -74,7 +74,7 @@ export const App = () => {
       <div className="map">
         <Map
           height={800}
-          provider={mapTiler}
+          provider={osm}
           center={center}
           zoom={zoom}
           zoomSnap={false}
