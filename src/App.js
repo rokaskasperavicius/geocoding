@@ -42,7 +42,6 @@ export const App = () => {
   function mapTiler (x, y, z, dpr) {
     return `https://maptiles.p.rapidapi.com/en/map/v1/${z}/${x}/${y}.png?rapidapi-key=5e03c7f7cemsh40721afc8a3ddc5p1e7af4jsnd63ea410a5c0`
   }
-  console.log(zoom)
 
   useEffect(() => {
     if (debouncedValue.length > 0) {
@@ -77,10 +76,10 @@ export const App = () => {
           provider={osm}
           center={center}
           zoom={zoom}
-          zoomSnap={false}
+          // zoomSnap={false}
           onBoundsChanged={({ center, zoom }) => {
-            // setZoom(zoom)
-            // setCenter(center)
+            setZoom(zoom)
+            setCenter(center)
           }}
         >
            {/* <Overlay anchor={anchor} latLngToPixel={(...props) => console.log(props)}>
