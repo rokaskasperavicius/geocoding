@@ -78,8 +78,8 @@ export const App = () => {
           zoom={zoom}
           // zoomSnap={false}
           onBoundsChanged={({ center, zoom }) => {
-            setZoom(zoom)
-            setCenter(center)
+            // setZoom(zoom)
+            // setCenter(center)
           }}
         >
            {/* <Overlay anchor={anchor} latLngToPixel={(...props) => console.log(props)}>
