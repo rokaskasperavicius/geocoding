@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Map, Marker, ZoomControl, Overlay } from 'pigeon-maps'
 import { stamenTerrain } from 'pigeon-maps/providers'
+import { useDebounce } from 'use-debounce'
 
 export const App = () => {
   const [location, setLocation] = useState("")
@@ -12,7 +13,11 @@ export const App = () => {
   const [anchor, setAnchor] = useState(center)
   const [zoom, setZoom] = useState(15)
 
-  const sendLocation = () => {
+  const [displayNames, setDisplayNames] = useState([])
+
+  const [debouncedValue] = useDebounce(location, 1000);
+
+  const sendLocation = (location) => {
     if (location.length > 0) {
       fetch(`https://nominatim.openstreetmap.org/search?q=${location}&format=json`)
         .then(res => res.json())
@@ -39,12 +44,21 @@ export const App = () => {
   }
   console.log(zoom)
 
+  useEffect(() => {
+    if (debouncedValue.length > 0) {
+      fetch(`https://nominatim.openstreetmap.org/search?q=${debouncedValue}&format=json`)
+        .then(res => res.json())
+        .then(dataJson => {
+          setDisplayNames(dataJson)
+        })
+    }
+  }, [debouncedValue])
+
   return (
     <div>
       <div>
         <input value={location} onChange={(e) => setLocation(e.target.value)} />
-
-        <button onClick={() => sendLocation()}>Get info</button>
+        {/* <button onClick={() => sendLocation()}>Get info</button> */}
 
         {data && data.length > 0 && (
           <div>{data[0].lat} {data[0].lon}</div>
@@ -54,6 +68,9 @@ export const App = () => {
           <div>{weather.main.temp - 273.15}</div>
         )}
       </div>
+      {displayNames.map(({ display_name }) => (
+        <div style={{ cursor: "pointer" }} onClick={() => sendLocation(display_name)}>{display_name}</div>
+      ))}
       <div className="map">
         <Map
           height={800}
