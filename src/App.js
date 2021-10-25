@@ -12,14 +12,14 @@ export const App = () => {
   const [location, setLocation] = useState("")
   const [isLoading, setIsLoading] = useState(false)
 
-  const [isOpen, setIsOpen] = useState(false)
+  const [isOpen, setIsOpen] = useState(true)
 
   const [data, setData] = useState()
   const [weather, setWeather] = useState()
 
   const [center, setCenter] = useState([40.758091, -74.000267])
   const [anchor, setAnchor] = useState(center)
-  const [zoom, setZoom] = useState(17)
+  const [zoom, setZoom] = useState(5)
 
   const [displayNames, setDisplayNames] = useState([])
 
@@ -46,6 +46,7 @@ export const App = () => {
   const reverseLookUp = () => {
     setIsLoading(true)
     navigator.geolocation.getCurrentPosition(({ coords: { latitude, longitude } }) => {
+      setZoom(17)
       setCenter([parseFloat(latitude), parseFloat(longitude)])
       setIsLoading(false)
       // fetch(`https://eu1.locationiq.com/v1/reverse.php?key=pk.3b4a15ec85f3ef7ee440bfac775ab389&lat=${latitude}&lon=${longitude}&format=json`)
@@ -105,39 +106,50 @@ export const App = () => {
   return (
     <div className="app">
       <div className={`search-wrapper${isOpen ? ' search-wrapper-open' : ''}`}>
-        <div className="search-content">
-          <div className="input-wrapper">
-            <input value={location} onChange={(e) => setLocation(e.target.value)} placeholder="Search for an address" />
-            <img
-              onClick={reverseLookUp}
-              alt="location icon"
-              className="input-icon"
-              src={Icon}
-            />
+        <img
+          src={ExpandIcon}
+          alt="expand icon"
+          className="expand-icon"
+          onClick={() => setIsOpen(!isOpen)}
+        />
+        <div className="test">
+          <div className="search-content">
+            <div className="input-wrapper">
+              <input value={location} onChange={(e) => setLocation(e.target.value)} placeholder="Search for an address" />
+              <img
+                onClick={reverseLookUp}
+                alt="location icon"
+                className="input-icon"
+                src={Icon}
+              />
+            </div>
+
+            {isLoading && (
+              <CircleLoader
+                size={80}
+                css={{
+                  display: "block",
+                  margin: "auto",
+                  marginTop: "100px",
+                }}
+              />
+            )}
+
+            {displayNames.length > 0 && !isLoading && (
+              <ol className="addresses">
+                {displayNames.map(({ display_name, lat, lon }) => (
+                  <li className="address" onClick={() => {
+                    setZoom(17)
+                    setCenter([parseFloat(lat), parseFloat(lon)])
+                  }}>{display_name}</li>
+                ))}
+              </ol>
+            )}
+
+            {displayNames.error && !isLoading && (
+              <div className="no-address">No address found</div>
+            )}
           </div>
-
-          {isLoading && (
-            <CircleLoader
-              size={80}
-              css={{
-                display: "block",
-                margin: "auto",
-                marginTop: "100px",
-              }}
-            />
-          )}
-
-          {displayNames.length > 0 && !isLoading && (
-            <ol className="addresses">
-              {displayNames.map(({ display_name, lat, lon }) => (
-                <li className="address" onClick={() => setCenter([parseFloat(lat), parseFloat(lon)])}>{display_name}</li>
-              ))}
-            </ol>
-          )}
-
-          {displayNames.error && !isLoading && (
-            <div className="no-address">No address found</div>
-          )}
         </div>
       </div>
       <div className="map-wrapper">
@@ -148,12 +160,6 @@ export const App = () => {
           zoom={zoom}
           metaWheelZoom={true}
         >
-          {/* <img
-            src={ExpandIcon}
-            alt="expand icon"
-            className="expand-icon"
-            onClick={() => setIsOpen(!isOpen)}
-          /> */}
           {center && (
             <div className="position">
               Latitude: {center[0]}&nbsp;&nbsp;|&nbsp;&nbsp;Longitude: {center[1]}
@@ -164,9 +170,6 @@ export const App = () => {
               {Math.round(weather.main.temp - 273.15)} °C
             </div>
           )}
-          <div className="expand" onClick={() => setIsOpen(!isOpen)}>
-            {isOpen ? "Close" : "Open"} search
-          </div>
           <ZoomControl style={{ bottom: 30, top: "unset", right: 10, left: "unset" }} buttonStyle={{ width: 50, height: 50, minWidth: "unset" }} />
           <Marker width={50} anchor={center}/>
         </Map>

@@ -19,6 +19,7 @@ input {
   box-sizing: border-box;
   min-width: 500px;
   padding: 5px;
+  height: 100%;
 }
 
 .input-wrapper {
@@ -30,6 +31,8 @@ input {
 
 .addresses {
   font-size: 18px;
+  height: calc(100% - 70px);
+  overflow: scroll;
 }
 
 .no-address {
@@ -124,14 +127,17 @@ footer {
   align-items: center;
 }
 
+.test {
+  overflow: hidden;
+  height: 100%;
+}
+
 .search-wrapper {
   width: 0px;
 
   transition: all 0.5s ease-in-out;
 
   border-right: 2px solid black;
-
-  overflow: hidden;
 
   z-index: 999;
 
@@ -160,7 +166,7 @@ footer {
 .temperature {
   position: absolute;
   right: 10px;
-  top: 70px;
+  top: 10px;
   width: 160px;
   height: 160px;
   display: flex;
@@ -173,12 +179,13 @@ footer {
   z-index: 99;
 }
 
-.expand {
-  width: 160px;
+.expand-icon {
+  width: 50px;
   height: 50px;
   position: absolute;
-  top: 10px;
-  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  right: -60px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -188,10 +195,9 @@ footer {
   border-radius: 10px;
   cursor: pointer;
   z-index: 999;
-  color: white;
 }
 
-.expand:hover {
+.expand-icon:hover {
   background-color: rgba(0, 0, 0, 0.9);
 }
 
@@ -202,7 +208,7 @@ footer {
   color: white;
   font-size: 25px;
   padding: 10px;
-  border-radius: 20px;
+  border-radius: 10px;
   display: flex;
   justify-content: center;
   width: 630px;
