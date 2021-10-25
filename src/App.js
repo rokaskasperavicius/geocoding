@@ -46,19 +46,22 @@ export const App = () => {
   const reverseLookUp = () => {
     setIsLoading(true)
     navigator.geolocation.getCurrentPosition(({ coords: { latitude, longitude } }) => {
-      fetch(`https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${latitude}&lon=${longitude}`)
-        .then(res => res.json())
-        .then(dataJson => {
-          console.log(dataJson)
-          setZoom(17)
-          setData(dataJson)
-          setCenter([parseFloat(dataJson.lat), parseFloat(dataJson.lon)])
-          setAnchor([parseFloat(dataJson.lat), parseFloat(dataJson.lon)])
-        })
-        .finally(() => {
-          console.log("SETTING TO FALSE")
-          setIsLoading(false)
-        })
+      setCenter([parseFloat(latitude), parseFloat(longitude)])
+      setIsLoading(false)
+      // fetch(`https://eu1.locationiq.com/v1/reverse.php?key=pk.3b4a15ec85f3ef7ee440bfac775ab389&lat=${latitude}&lon=${longitude}&format=json`)
+      // // fetch(`https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${latitude}&lon=${longitude}`)
+      //   .then(res => res.json())
+      //   .then(dataJson => {
+      //     console.log(dataJson)
+      //     setZoom(17)
+      //     setData(dataJson)
+      //     setCenter([parseFloat(dataJson.lat), parseFloat(dataJson.lon)])
+      //     setAnchor([parseFloat(dataJson.lat), parseFloat(dataJson.lon)])
+      //   })
+      //   .finally(() => {
+      //     console.log("SETTING TO FALSE")
+      //     setIsLoading(false)
+      //   })
     });
   }
 
@@ -76,7 +79,8 @@ export const App = () => {
 
   useEffect(() => {
     if (debouncedValue.length > 0) {
-      fetch(`https://nominatim.openstreetmap.org/search?q=${debouncedValue}&format=jsonv2`)
+      fetch(`https://eu1.locationiq.com/v1/search.php?key=pk.3b4a15ec85f3ef7ee440bfac775ab389&q=${debouncedValue}&format=json`)
+      // fetch(`https://nominatim.openstreetmap.org/search?q=${debouncedValue}&format=jsonv2`)
         .then(res => res.json())
         .then(dataJson => {
           setDisplayNames(dataJson)
