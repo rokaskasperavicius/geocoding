@@ -109,13 +109,14 @@ body {
 .app {
   display: flex;
   flex: 1 1;
+  position: relative;
 }
 
 footer {
   height: 40px;
   background-color: black;
   color: white;
-  z-index: 99;
+  z-index: 9999;
   padding: 20px;
 
   display: flex;
@@ -128,14 +129,17 @@ footer {
 
   transition: all 0.5s ease-in-out;
 
-  display: flex;
-  justify-content: center;
   border-right: 2px solid black;
 
-  /* padding: 0px; */
   overflow: hidden;
 
-  z-index: 1;
+  z-index: 999;
+
+  position: absolute;
+  height: 100%;
+  background-color: white;
+  top: 0;
+  left: 0;
 }
 
 .search-wrapper-open {
@@ -155,8 +159,8 @@ footer {
 
 .temperature {
   position: absolute;
-  top: 10px;
   right: 10px;
+  top: 70px;
   width: 160px;
   height: 160px;
   display: flex;
@@ -166,22 +170,28 @@ footer {
   font-size: 50px;
   color: white;
   border-radius: 20px;
+  z-index: 99;
 }
 
-.expand-icon {
-  width: 50px;
+.expand {
+  width: 160px;
   height: 50px;
   position: absolute;
   top: 10px;
-  left: 10px;
+  right: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 23px;
 
   background-color: rgba(0, 0, 0, 0.7);
   border-radius: 10px;
   cursor: pointer;
-  z-index: 99;
+  z-index: 999;
+  color: white;
 }
 
-.expand-icon:hover {
+.expand:hover {
   background-color: rgba(0, 0, 0, 0.9);
 }
 
@@ -195,9 +205,8 @@ footer {
   border-radius: 20px;
   display: flex;
   justify-content: center;
-  width: 60%;
-  right: 50%;
-  transform: translateX(50%);
+  width: 630px;
+  left: 10px;
 }
 
 @keyframes spinner {

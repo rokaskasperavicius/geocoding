@@ -12,7 +12,7 @@ export const App = () => {
   const [location, setLocation] = useState("")
   const [isLoading, setIsLoading] = useState(false)
 
-  const [isOpen, setIsOpen] = useState(true)
+  const [isOpen, setIsOpen] = useState(false)
 
   const [data, setData] = useState()
   const [weather, setWeather] = useState()
@@ -21,9 +21,9 @@ export const App = () => {
   const [anchor, setAnchor] = useState(center)
   const [zoom, setZoom] = useState(17)
 
-  const [displayNames, setDisplayNames] = useState()
+  const [displayNames, setDisplayNames] = useState([])
 
-  const [debouncedValue] = useDebounce(location, 1000);
+  const [debouncedValue] = useDebounce(location, 400);
 
   // const sendLocation = (location) => {
   //   if (location.length > 0) {
@@ -97,12 +97,10 @@ export const App = () => {
     if (location.length > 0) {
       setIsLoading(true)
     } else {
-      setDisplayNames(undefined)
+      setDisplayNames([])
       setIsLoading(false)
     }
   }, [location])
-
-  console.log({ data, isLoading })
 
   return (
     <div className="app">
@@ -129,7 +127,7 @@ export const App = () => {
             />
           )}
 
-          {displayNames && !isLoading && (
+          {displayNames.length > 0 && !isLoading && (
             <ol className="addresses">
               {displayNames.map(({ display_name, lat, lon }) => (
                 <li className="address" onClick={() => setCenter([parseFloat(lat), parseFloat(lon)])}>{display_name}</li>
@@ -137,7 +135,7 @@ export const App = () => {
             </ol>
           )}
 
-          {displayNames && displayNames.length === 0 && !isLoading && (
+          {displayNames.error && !isLoading && (
             <div className="no-address">No address found</div>
           )}
         </div>
@@ -150,12 +148,12 @@ export const App = () => {
           zoom={zoom}
           metaWheelZoom={true}
         >
-          <img
+          {/* <img
             src={ExpandIcon}
             alt="expand icon"
             className="expand-icon"
             onClick={() => setIsOpen(!isOpen)}
-          />
+          /> */}
           {center && (
             <div className="position">
               Latitude: {center[0]}&nbsp;&nbsp;|&nbsp;&nbsp;Longitude: {center[1]}
@@ -166,6 +164,9 @@ export const App = () => {
               {Math.round(weather.main.temp - 273.15)} °C
             </div>
           )}
+          <div className="expand" onClick={() => setIsOpen(!isOpen)}>
+            {isOpen ? "Close" : "Open"} search
+          </div>
           <ZoomControl style={{ bottom: 30, top: "unset", right: 10, left: "unset" }} buttonStyle={{ width: 50, height: 50, minWidth: "unset" }} />
           <Marker width={50} anchor={center}/>
         </Map>
