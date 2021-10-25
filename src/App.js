@@ -12,7 +12,7 @@ export const App = () => {
   const [location, setLocation] = useState("")
   const [isLoading, setIsLoading] = useState(false)
 
-  const [isOpen, setIsOpen] = useState(true)
+  const [isOpen, setIsOpen] = useState(false)
 
   const [data, setData] = useState()
   const [weather, setWeather] = useState()
