@@ -133,6 +133,7 @@ footer {
 }
 
 .search-wrapper {
+  background: linear-gradient(#E1FFDF, white);
   width: 0px;
 
   transition: all 0.5s ease-in-out;
