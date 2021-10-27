@@ -8,11 +8,81 @@ input {
   border-radius: 10px;
 }
 
-#root {
+.main.main--inverted input {
+  background-color: #666666;
+}
+
+input::placeholder {
+  color: black;
+}
+
+.main {
   min-height: 100vh;
   position: relative;
   display: flex;
   flex-direction: column;
+  background-color: white;
+  color: white;
+}
+
+.main.main--inverted {
+  background-color: black;
+  color: black;
+}
+
+.main.main--inverted footer {
+  background-color: rgba(255, 255, 255, 0.4);
+}
+
+.pigeon-attribution {
+  right: 70px !important;
+  bottom: 1px !important;
+}
+
+.pigeon-zoom-in, .pigeon-zoom-out {
+  border-radius: 10px !important;
+}
+
+.pigeon-zoom-in, .pigeon-zoom-out {
+  opacity: 0.7;
+  color: white !important;
+  background-color: black !important;
+}
+
+.main.main--inverted .pigeon-zoom-in, .main.main--inverted .pigeon-zoom-out {
+  opacity: 0.4;
+  color: black !important;
+  background-color: white !important;
+}
+
+.main.main--inverted .pigeon-zoom-in:hover, .main.main--inverted .pigeon-zoom-out:hover {
+  opacity: 0.5;
+}
+
+.pigeon-zoom-in:hover, .pigeon-zoom-out:hover {
+  opacity: 0.8;
+}
+
+.pigeon-zoom-buttons {
+  bottom: 10px;
+}
+
+.pigeon-zoom-in {
+  border-bottom-left-radius: 0px !important;
+  border-bottom-right-radius: 0px !important;
+}
+
+.pigeon-zoom-out {
+  border-top-left-radius: 0px !important;
+  border-top-right-radius: 0px !important;
+}
+
+a {
+  color: white;
+}
+
+.main.main--inverted a {
+  color: black;
 }
 
 .search-content {
@@ -27,6 +97,81 @@ input {
   position: relative;
 
   margin-bottom: 20px;
+}
+
+.layout {
+  font-size: 12px;
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  display: flex;
+  padding: 10px;
+  padding-right: 20px;
+  padding-left: 20px;
+  border-radius: 10px;
+  gap: 10px;
+  z-index: 10;
+
+  opacity: 0;
+}
+
+.layout.layout--opened {
+  opacity: 1;
+}
+
+.main.main--inverted .layout-background {
+  background-color: white;
+}
+
+.layout span {
+  text-align: center;
+  margin-top: 5px;
+}
+
+.layout img {
+  cursor: pointer;
+  width: 60px;
+  height: 60px;
+  border-radius: 10px;
+  /* border: 2px solid white; */
+  transform: none;
+  transition: transform 0.1s ease-in-out;
+}
+
+.layout img:hover {
+  transform: scale3d(1.1, 1.1, 1.1);
+  /* border: 2px solid #4A68FF; */
+}
+
+.layout-background {
+  position: absolute;
+  width: 310px;
+  height: 100px;
+  bottom: 10px;
+  left: 10px;
+
+  background-color: black;
+
+  border-radius: 10px;
+
+  opacity: 0;
+}
+
+.layout-background.layout-background--opened {
+  opacity: 0.7;
+}
+
+.main.main--inverted .layout-background.layout-background--opened {
+  opacity: 0.4;
+}
+
+.layout > div + div {
+  /* margin-left: 10px; */
+}
+
+.layout > div {
+  display: flex;
+  flex-direction: column;
 }
 
 .addresses {
@@ -46,7 +191,7 @@ input {
 }
 
 .input-wrapper > input {
-  padding-right: 41px;
+  padding-left: 53px;
 }
 
 /* ol {
@@ -74,18 +219,18 @@ input {
   top: 2px;
   width: 47px;
   height: 47px;
-  border-top-right-radius: 10px;
-  border-bottom-right-radius: 10px;
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
 
   position: absolute;
-  right: 0;
+  left: 1px;
 
-  border-left: 1px solid rgb(118, 118, 118);
+  border-right: 2px solid black;
   cursor: pointer;
 }
 
 .input-icon:hover {
-  background-color: rgba(0, 0, 0, 0.1);
+  background-color: rgba(0, 0, 0, 0.3);
 }
 
 .input-icon:active {
@@ -108,10 +253,6 @@ button:hover {
   border: 1px solid black
 }
 
-a {
-  color: white;
-}
-
 body, input {
   font-family: Verdana, sans-serif;
 }
@@ -129,7 +270,6 @@ body {
 footer {
   height: 20px;
   background-color: black;
-  color: white;
   z-index: 9999;
   padding: 20px;
   font-size: 15px;
@@ -168,7 +308,7 @@ footer {
 
 .map-wrapper {
   flex: 1 1;
-  cursor: grab;
+  /* cursor:; */
 }
 
 .map-wrapper > div:first-child {
@@ -190,6 +330,12 @@ footer {
   z-index: 99;
 }
 
+.main.main--inverted .temperature {
+  background-color: white;
+  opacity: 0.4;
+  color: black;
+}
+
 .expand-icon {
   width: 50px;
   height: 50px;
@@ -209,7 +355,7 @@ footer {
 }
 
 .expand-icon:hover {
-  background-color: rgba(0, 0, 0, 0.9);
+  background-color: rgba(0, 0, 0, 0.8);
 }
 
 .position {
@@ -224,6 +370,12 @@ footer {
   justify-content: center;
   min-width: 200px;
   left: 10px;
+}
+
+.main.main--inverted .position {
+  background-color: white;
+  opacity: 0.4;
+  color: black;
 }
 
 @keyframes spinner {
@@ -248,4 +400,14 @@ footer {
   left: 10%;
   transform: translate3d(-50%, -50%, 0);
   will-change: transform;
+}
+
+.credits {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.license {
+  font-size: 8px;
 }
