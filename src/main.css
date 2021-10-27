@@ -30,7 +30,9 @@ input {
 }
 
 .addresses {
-  font-size: 18px;
+  color: white;
+  padding-left: 5px;
+  font-size: 15px;
   height: calc(100% - 70px);
   overflow: scroll;
 }
@@ -40,19 +42,24 @@ input {
   justify-content: center;
   margin-top: 120px;
   font-size: 20px;
+  color: white;
 }
 
 .input-wrapper > input {
   padding-right: 41px;
 }
 
-ol {
+/* ol {
   padding-left: 25px;
   margin: unset;
-}
+} */
 
-li + li {
+/* li + li {
   margin-top: 10px;
+} */
+
+.address + .address {
+  margin-top: 20px;
 }
 
 .address {
@@ -105,6 +112,10 @@ a {
   color: white;
 }
 
+body, input {
+  font-family: Verdana, sans-serif;
+}
+
 body {
   margin: 0;
 }
@@ -116,11 +127,12 @@ body {
 }
 
 footer {
-  height: 40px;
+  height: 20px;
   background-color: black;
   color: white;
   z-index: 9999;
   padding: 20px;
+  font-size: 15px;
 
   display: flex;
   justify-content: space-between;
@@ -133,7 +145,7 @@ footer {
 }
 
 .search-wrapper {
-  background: linear-gradient(#E1FFDF, white);
+  background-color: rgba(0, 0, 0, 0.8);
   width: 0px;
 
   transition: all 0.5s ease-in-out;
@@ -144,7 +156,6 @@ footer {
 
   position: absolute;
   height: 100%;
-  background-color: white;
   top: 0;
   left: 0;
 }
@@ -168,15 +179,14 @@ footer {
   position: absolute;
   right: 10px;
   top: 10px;
-  width: 160px;
-  height: 160px;
+  padding: 10px;
   display: flex;
   justify-content: center;
   align-items: center;
   background-color: rgba(0, 0, 0, 0.7);
-  font-size: 50px;
+  font-size: 20px;
   color: white;
-  border-radius: 20px;
+  border-radius: 10px;
   z-index: 99;
 }
 
@@ -207,12 +217,12 @@ footer {
   top: 10px;
   background-color: rgba(0, 0, 0, 0.7);
   color: white;
-  font-size: 25px;
+  font-size: 20px;
   padding: 10px;
   border-radius: 10px;
   display: flex;
   justify-content: center;
-  width: 630px;
+  min-width: 200px;
   left: 10px;
 }
 

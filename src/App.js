@@ -126,6 +126,7 @@ export const App = () => {
 
             {isLoading && (
               <CircleLoader
+                color="white"
                 size={80}
                 css={{
                   display: "block",
@@ -136,14 +137,14 @@ export const App = () => {
             )}
 
             {displayNames.length > 0 && !isLoading && (
-              <ol className="addresses">
+              <div className="addresses">
                 {displayNames.map(({ display_name, lat, lon }) => (
-                  <li className="address" onClick={() => {
+                  <div className="address" onClick={() => {
                     setZoom(17)
                     setCenter([parseFloat(lat), parseFloat(lon)])
-                  }}>{display_name}</li>
+                  }}>{display_name}</div>
                 ))}
-              </ol>
+              </div>
             )}
 
             {displayNames.error && !isLoading && (
@@ -160,15 +161,15 @@ export const App = () => {
           zoom={zoom}
           metaWheelZoom={true}
         >
-          {center && (
+          {center && !isOpen && (
             <div className="position">
-              Latitude: {center[0]}&nbsp;&nbsp;|&nbsp;&nbsp;Longitude: {center[1]}
+              <strong>Lat:</strong>&nbsp;{center[0]}&nbsp;&nbsp;|&nbsp;&nbsp;<strong>Lon:</strong>&nbsp;{center[1]}
             </div>
           )}
           {weather && (
-            <div className="temperature">
+            <strong className="temperature">
               {Math.round(weather.main.temp - 273.15)} °C
-            </div>
+            </strong>
           )}
           <ZoomControl style={{ bottom: 30, top: "unset", right: 10, left: "unset" }} buttonStyle={{ width: 50, height: 50, minWidth: "unset" }} />
           <Marker width={50} anchor={center}/>
