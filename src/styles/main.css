@@ -90,7 +90,7 @@ input:focus-visible {
   background-color: rgba(255, 255, 255, 0.4) !important;
 }
 
-.content.content--inverted .pigeon-zoom-in:hover, .content.main--inverted .content-zoom-out:hover {
+.content.content--inverted .pigeon-zoom-in:hover, .content.content--inverted .pigeon-zoom-out:hover {
   background-color: rgba(255, 255, 255, 0.5) !important;
 }
 
