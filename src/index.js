@@ -1,16 +1,34 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+} from 'react-router-dom'
 
-import { Layout } from './Layout'
-import { App } from './App'
+// Components
+import { Layout } from 'components'
 
-import './main.css'
+// Pages
+import { Map, Attributions } from 'pages'
+
+// Styles
+import 'styles/main.css'
 
 ReactDOM.render(
-  <React.StrictMode>
-    <Layout>
-      <App />
-    </Layout>
-  </React.StrictMode>,
+  <Router>
+    <Switch>
+      <Route path='/attributions'>
+        <Layout>
+          <Attributions />
+        </Layout>
+      </Route>
+      <Route path='*'>
+        <Layout>
+          <Map />
+        </Layout>
+      </Route>
+    </Switch>
+  </Router>,
   document.getElementById('root')
 );
