@@ -2,8 +2,8 @@
 
 ## Requirements
 
-- Node >= v14.x.x (Recommended: v.14.18.0)
-- NPM >= v6.x.x (Recommended: v.6.14.15)
+- Node >= v14.x.x (Recommended: v14.18.0)
+- NPM >= v6.x.x (Recommended: v6.14.15)
 
 ## Setup
 
