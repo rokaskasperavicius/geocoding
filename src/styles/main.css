@@ -5,6 +5,16 @@ body {
   --blue: blue;
 }
 
+.image-tile {
+  width: 300px;
+  height: 300px;
+
+  position: absolute;
+  z-index: 10;
+
+  top: 60px;
+}
+
 .content {
   min-height: 100vh;
   display: flex;

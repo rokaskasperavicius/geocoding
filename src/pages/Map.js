@@ -32,11 +32,16 @@ export const Map = ({ setInverted }) => {
   const [mapCenter, setMapCenter] = useState(currentMapCenter)
   const [mapZoom, setMapZoom] = useState(currentMapZoom)
 
+  const [image, setImage] = useState('')
+
+  // useEffect(() => {onmousemove = function(e){console.log("mouse location:", e.clientX, e.clientY)}}, [])
+
+  const [pos, setPos] = useState([])
+  
+
   useEffect(() => {
     setInverted(mapLayer[0] === 'dark')
   }, [mapLayer, setInverted])
-
-  console.log({ mapLayer })
 
   const handleGetCurrentLocation = () => {
     const handleError = () => {
@@ -56,6 +61,12 @@ export const Map = ({ setInverted }) => {
     }, handleError);
   }
 
+  const onTileClick = (latLng) => {
+    fetch(`https://api.mapbox.com/styles/v1/mapbox/satellite-v9/static/${latLng[1]},${latLng[0]},${mapZoom - 1},0/300x300@2x?access_token=pk.eyJ1Ijoicm9rYXMxOTIiLCJhIjoiY2t3NmZoMHhkMHBzeTJubnY1dXF3ZDJiOSJ9.vDVsipOXPQAjbOnzzTg5bg`)
+      .then((res) => setImage(res.url))
+      // .then((data) => console.log(data))
+  }
+
   useEffect(() => {
     if (markerPosition) {
       fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${markerPosition[0]}&lon=${markerPosition[1]}&appid=06d73ad44324084601b8cbbe52ab44b2`)
@@ -69,6 +80,15 @@ export const Map = ({ setInverted }) => {
     // LocationIQ's free plan does not provide the satellite view
     if (mapLayer[0] === 'satellite') {
       return `https://api.maptiler.com/tiles/satellite/${z}/${x}/${y}.jpg?key=WiyE10ejQrGObwvuZiuv`
+
+      // return `https://api.maptiler.com/maps/hybrid/${z}/${x}/${y}@2x.jpg?key=WiyE10ejQrGObwvuZiuv`
+
+
+
+      // dont use
+      // https://api.maptiler.com/maps/streets/static/59,52,5/400x400.png?key=WiyE10ejQrGObwvuZiuv
+
+      // 'https://maps.locationiq.com/v3/staticmap?key=pk.3b4a15ec85f3ef7ee440bfac775ab389&center=52,55&zoom=<zoom>&size=300x300&format=png&maptype=streets'
     }
 
     return `https://a-tiles.locationiq.com/v3/${mapLayer[0]}/r/${z}/${x}/${y}.${mapLayer[1]}?key=pk.3b4a15ec85f3ef7ee440bfac775ab389`
@@ -96,7 +116,73 @@ export const Map = ({ setInverted }) => {
   }, [searchValue])
 
   return (
-    <main className='map'>
+    <main className='map' onMouseMove={(event) => setPos([event.clientX, event.clientY])}>
+      <img className='image-tile' src={image} />
+      {/* <div
+        style={{
+          width: '200px',
+          height: '200px',
+          position: 'absolute',
+          top: pos[1] - 100,
+          left: pos[0] - 100,
+          border: '3px solid white',
+          borderRadius: '20px',
+          zIndex: 10,
+        }}
+      /> */}
+
+      <div
+        style={{
+          width: '300px',
+          height: '3px',
+          position: 'absolute',
+          top: pos[1] - 150,
+          left: pos[0] - 150,
+          backgroundColor: 'white',
+          // border: '3px solid white',
+          // borderRadius: '20px',
+          zIndex: 10,
+        }}
+      />
+      <div
+        style={{
+          width: '300px',
+          height: '3px',
+          position: 'absolute',
+          top: pos[1] + 150,
+          left: pos[0] - 150,
+          backgroundColor: 'white',
+          // border: '3px solid white',
+          // borderRadius: '20px',
+          zIndex: 10,
+        }}
+      />
+      <div
+        style={{
+          width: '3px',
+          height: '300px',
+          position: 'absolute',
+          top: pos[1] - 150,
+          left: pos[0] - 150,
+          backgroundColor: 'white',
+          // border: '3px solid white',
+          // borderRadius: '20px',
+          zIndex: 10,
+        }}
+      />
+      <div
+        style={{
+          width: '3px',
+          height: '303px',
+          position: 'absolute',
+          top: pos[1] - 150,
+          left: pos[0] + 150,
+          backgroundColor: 'white',
+          // border: '3px solid white',
+          // borderRadius: '20px',
+          zIndex: 10,
+        }}
+      />
       <div className={`search-sidebar${isSearchOpen ? ' search-sidebar--opened' : ''}`}>
         <img
           src={Expand}
@@ -155,7 +241,9 @@ export const Map = ({ setInverted }) => {
               © <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noreferrer noopener">OpenStreetMap</a> contributors
             </span>
           }
-          onClick={({ latLng }) => {
+          onClick={({ latLng, ...props }) => {
+            onTileClick(latLng)
+            // console.log(latLng, props)
             setMarkerPosition(latLng)
             setCurrentMapCenter(mapCenter)
             setCurrentMapZoom(mapZoom)
