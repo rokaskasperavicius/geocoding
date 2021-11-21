@@ -15,7 +15,7 @@ import { DEFAULT_MAP_CENTER, DEFAULT_MAP_ZOOM, MAP_ZOOM } from 'common/constants
 
 // import * as tf from '@tensorflow/tfjs';
 // import * as tmImage from '@teachablemachine/image';
-import ml5 from 'ml5'
+// import ml5 from 'ml5'
 
 let classifier;
 
@@ -61,41 +61,41 @@ export const Map = ({ setInverted }) => {
 
   const [start, setStart] = useState(false)
 
-  useEffect(() => {
-    classifier = ml5.imageClassifier("https://teachablemachine.withgoogle.com/models/1KhaE1azi/model.json", () => {
-      setStart(true)
-      classifier.classify(document.getElementById('test'), (error, results) => {
-        if (error) {
-          console.error(error);
-          return;
-        }
+  // useEffect(() => {
+  //   classifier = ml5.imageClassifier("https://teachablemachine.withgoogle.com/models/1KhaE1azi/model.json", () => {
+  //     setStart(true)
+  //     classifier.classify(document.getElementById('test'), (error, results) => {
+  //       if (error) {
+  //         console.error(error);
+  //         return;
+  //       }
         
-        console.log(results[0].label)
-      });
-    });
-    // console.log(new ImageData("https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Image_created_with_a_mobile_phone.png/1200px-Image_created_with_a_mobile_phone.png"))
-    // setInterval(() => {
-    //   if (classifier && start) {
-    //     console.log('he2y')
-    //     // var img2 = document.createElement('img'); // Use DOM HTMLImageElement
-    //     // // img2.src = "https://api.mapbox.com/styles/v1/mapbox/satellite-v9/static/31.938068109374967,52.91159012527551,7,0/300x300@2x?access_token=pk.eyJ1Ijoicm9rYXMxOTIiLCJhIjoiY2t3NmZoMHhkMHBzeTJubnY1dXF3ZDJiOSJ9.vDVsipOXPQAjbOnzzTg5bg";
-    //     // //img2.src= 'https://api.mapbox.com/styles/v1/mapbox/satellite-v9/static/3.093120294433561,55.93323768270082,4,0/300x300@2x?access_token=pk.eyJ1Ijoicm9rYXMxOTIiLCJhIjoiY2t3NmZoMHhkMHBzeTJubnY1dXF3ZDJiOSJ9.vDVsipOXPQAjbOnzzTg5bg';
-    //     // img2.src = "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Image_created_with_a_mobile_phone.png/1200px-Image_created_with_a_mobile_phone.png";
-    //     // img2.alt = 'alt text';
+  //       console.log(results[0].label)
+  //     });
+  //   });
+  //   // console.log(new ImageData("https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Image_created_with_a_mobile_phone.png/1200px-Image_created_with_a_mobile_phone.png"))
+  //   // setInterval(() => {
+  //   //   if (classifier && start) {
+  //   //     console.log('he2y')
+  //   //     // var img2 = document.createElement('img'); // Use DOM HTMLImageElement
+  //   //     // // img2.src = "https://api.mapbox.com/styles/v1/mapbox/satellite-v9/static/31.938068109374967,52.91159012527551,7,0/300x300@2x?access_token=pk.eyJ1Ijoicm9rYXMxOTIiLCJhIjoiY2t3NmZoMHhkMHBzeTJubnY1dXF3ZDJiOSJ9.vDVsipOXPQAjbOnzzTg5bg";
+  //   //     // //img2.src= 'https://api.mapbox.com/styles/v1/mapbox/satellite-v9/static/3.093120294433561,55.93323768270082,4,0/300x300@2x?access_token=pk.eyJ1Ijoicm9rYXMxOTIiLCJhIjoiY2t3NmZoMHhkMHBzeTJubnY1dXF3ZDJiOSJ9.vDVsipOXPQAjbOnzzTg5bg';
+  //   //     // img2.src = "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Image_created_with_a_mobile_phone.png/1200px-Image_created_with_a_mobile_phone.png";
+  //   //     // img2.alt = 'alt text';
 
-    //     // console.log(img2)
+  //   //     // console.log(img2)
 
-    //     classifier.classify(document.getElementById('test'), (error, results) => {
-    //       if (error) {
-    //         console.error(error);
-    //         return;
-    //       }
+  //   //     classifier.classify(document.getElementById('test'), (error, results) => {
+  //   //       if (error) {
+  //   //         console.error(error);
+  //   //         return;
+  //   //       }
           
-    //       console.log(results)
-    //     });
-    //   }
-    // }, 5000);
-  }, [image]);
+  //   //       console.log(results)
+  //   //     });
+  //   //   }
+  //   // }, 5000);
+  // }, [image]);
 
 
   // console.log(model)
