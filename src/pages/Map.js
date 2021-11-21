@@ -190,7 +190,6 @@ export const Map = ({ setInverted }) => {
   // }
 
   const [pos, setPos] = useState([])
-  
 
   useEffect(() => {
     setInverted(mapLayer[0] === 'dark')
@@ -271,7 +270,7 @@ export const Map = ({ setInverted }) => {
   return (
     <main className='map' onMouseMove={(event) => setPos([event.clientX, event.clientY])}>
       <img crossOrigin='anonymous' id="test" className='image-tile' src={image} />
-      <button onClick={() => console.log('Predicting 123')}>CLICK</button>
+      <button onClick={() => console.log('Predicting 12356', window.ml5)}>CLICK</button>
       {/* <div
         style={{
           width: '200px',
