@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState } from 'react'
 import { Map as PigeonMap, ZoomControl, Overlay } from 'pigeon-maps'
 import { useDebounce } from 'use-debounce'
@@ -11,6 +12,12 @@ import { Expand, Target } from 'assets/icons'
 
 // Common
 import { DEFAULT_MAP_CENTER, DEFAULT_MAP_ZOOM, MAP_ZOOM } from 'common/constants'
+
+// import * as tf from '@tensorflow/tfjs';
+// import * as tmImage from '@teachablemachine/image';
+import ml5 from 'ml5'
+
+let classifier;
 
 export const Map = ({ setInverted }) => {
   const [searchValue, setSearchValue] = useState('')
@@ -32,9 +39,151 @@ export const Map = ({ setInverted }) => {
   const [mapCenter, setMapCenter] = useState(currentMapCenter)
   const [mapZoom, setMapZoom] = useState(currentMapZoom)
 
-  const [image, setImage] = useState('')
+  const [image, setImage] = useState("https://api.mapbox.com/styles/v1/mapbox/satellite-v9/static/31.938068109374967,52.91159012527551,7,0/300x300@2x?access_token=pk.eyJ1Ijoicm9rYXMxOTIiLCJhIjoiY2t3NmZoMHhkMHBzeTJubnY1dXF3ZDJiOSJ9.vDVsipOXPQAjbOnzzTg5bg")
 
-  // useEffect(() => {onmousemove = function(e){console.log("mouse location:", e.clientX, e.clientY)}}, [])
+  const [model, setModel] = useState()
+
+  // useEffect(async () => {
+  //   var img2 = document.createElement('img'); // Use DOM HTMLImageElement
+  //   // img2.src = "https://api.mapbox.com/styles/v1/mapbox/satellite-v9/static/31.938068109374967,52.91159012527551,7,0/300x300@2x?access_token=pk.eyJ1Ijoicm9rYXMxOTIiLCJhIjoiY2t3NmZoMHhkMHBzeTJubnY1dXF3ZDJiOSJ9.vDVsipOXPQAjbOnzzTg5bg";
+  //   //img2.src= 'https://api.mapbox.com/styles/v1/mapbox/satellite-v9/static/3.093120294433561,55.93323768270082,4,0/300x300@2x?access_token=pk.eyJ1Ijoicm9rYXMxOTIiLCJhIjoiY2t3NmZoMHhkMHBzeTJubnY1dXF3ZDJiOSJ9.vDVsipOXPQAjbOnzzTg5bg';
+  //   img2.src = image;
+  //   img2.crossOrigin = "anonymous";
+  //   img2.alt = 'alt text';
+
+
+  //   let imageModelURL = 'https://teachablemachine.withgoogle.com/models/1KhaE1azi/';
+  //   let classifier
+  //   classifier = await ml5.imageClassifier(imageModelURL + 'model.json', () => classifier.classify(img2));
+  //   // console.log(img2)
+  //   // classifier.classify(img2);
+  // }, [])
+
+  const [start, setStart] = useState(false)
+
+  useEffect(() => {
+    classifier = ml5.imageClassifier("https://teachablemachine.withgoogle.com/models/1KhaE1azi/model.json", () => {
+      setStart(true)
+      classifier.classify(document.getElementById('test'), (error, results) => {
+        if (error) {
+          console.error(error);
+          return;
+        }
+        
+        console.log(results[0].label)
+      });
+    });
+    // console.log(new ImageData("https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Image_created_with_a_mobile_phone.png/1200px-Image_created_with_a_mobile_phone.png"))
+    // setInterval(() => {
+    //   if (classifier && start) {
+    //     console.log('he2y')
+    //     // var img2 = document.createElement('img'); // Use DOM HTMLImageElement
+    //     // // img2.src = "https://api.mapbox.com/styles/v1/mapbox/satellite-v9/static/31.938068109374967,52.91159012527551,7,0/300x300@2x?access_token=pk.eyJ1Ijoicm9rYXMxOTIiLCJhIjoiY2t3NmZoMHhkMHBzeTJubnY1dXF3ZDJiOSJ9.vDVsipOXPQAjbOnzzTg5bg";
+    //     // //img2.src= 'https://api.mapbox.com/styles/v1/mapbox/satellite-v9/static/3.093120294433561,55.93323768270082,4,0/300x300@2x?access_token=pk.eyJ1Ijoicm9rYXMxOTIiLCJhIjoiY2t3NmZoMHhkMHBzeTJubnY1dXF3ZDJiOSJ9.vDVsipOXPQAjbOnzzTg5bg';
+    //     // img2.src = "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Image_created_with_a_mobile_phone.png/1200px-Image_created_with_a_mobile_phone.png";
+    //     // img2.alt = 'alt text';
+
+    //     // console.log(img2)
+
+    //     classifier.classify(document.getElementById('test'), (error, results) => {
+    //       if (error) {
+    //         console.error(error);
+    //         return;
+    //       }
+          
+    //       console.log(results)
+    //     });
+    //   }
+    // }, 5000);
+  }, [image]);
+
+
+  // console.log(model)
+
+  // useEffect(async () => {
+  //   // console.log({ image })
+  //   if (image !== '') {
+
+  //     // More API functions here:
+  //     // https://github.com/googlecreativelab/teachablemachine-community/tree/master/libraries/image
+
+  //     // the link to your model provided by Teachable Machine export panel
+  //     const URL = "https://teachablemachine.withgoogle.com/models/1KhaE1azi/";
+
+  //     let model, webcam, labelContainer, maxPredictions;
+
+  //     // Load the image model and setup the webcam
+  //     const modelURL = URL + "model.json";
+  //     const metadataURL = URL + "metadata.json";
+
+  //     // load the model and metadata
+  //     // Refer to tmImage.loadFromFiles() in the API to support files from a file picker
+  //     // or files from your local hard drive
+  //     // Note: the pose library adds "tmImage" object to your window (window.tmImage)
+  //     model = await tmImage.load(modelURL, metadataURL)
+  //     // maxPredictions = model.getTotalClasses();
+
+  //     // console.log(model.getClassLabels())
+
+  //     // // Convenience function to setup a webcam
+  //     // const flip = true; // whether to flip the webcam
+  //     // webcam = new tmImage.Webcam(200, 200, flip); // width, height, flip
+  //     // await webcam.setup(); // request access to the webcam
+  //     // await webcam.play();
+  //     // window.requestAnimationFrame(loop);
+
+  //     // // append elements to the DOM
+  //     // document.getElementById("webcam-container").appendChild(webcam.canvas);
+  //     // labelContainer = document.getElementById("label-container");
+  //     // for (let i = 0; i < maxPredictions; i++) { // and class labels
+  //     //     labelContainer.appendChild(document.createElement("div"));
+  //     // }
+
+      
+
+  //     // for (let i = 0; i < maxPredictions; i++) {
+  //     //     const classPrediction =
+  //     //         prediction[i].className + ": " + prediction[i].probability.toFixed(2);
+  //     //     labelContainer.childNodes[i].innerHTML = classPrediction;
+  //     // }
+
+  //     console.log(model.getClassLabels())
+  //     console.log({ image })
+  //     var img2 = document.createElement('img'); // Use DOM HTMLImageElement
+  //     img2.src = image;
+  //     img2.crossOrigin = "anonymous";
+  //     img2.alt = 'alt text';
+  
+  //     console.log(model)
+  //     const prediction = await model.predict(img2);
+  //     console.log(prediction)
+  //   }
+  // }, [image])
+
+  // run the webcam image through the image model
+  // const predict = async (image_src) => {
+  //   const URL = "https://teachablemachine.withgoogle.com/models/1KhaE1azi/";
+  //   const modelURL = URL + "model.json";
+  //   const metadataURL = URL + "metadata.json";
+  //   const model = await tmImage.load(modelURL, metadataURL)
+
+  //   console.log(tmImage)
+  //   // predict can take in an image, video or canvas html element
+  //   var img2 = document.createElement('img'); // Use DOM HTMLImageElement
+  //   // img2.src = "https://api.mapbox.com/styles/v1/mapbox/satellite-v9/static/31.938068109374967,52.91159012527551,7,0/300x300@2x?access_token=pk.eyJ1Ijoicm9rYXMxOTIiLCJhIjoiY2t3NmZoMHhkMHBzeTJubnY1dXF3ZDJiOSJ9.vDVsipOXPQAjbOnzzTg5bg";
+  //   //img2.src= 'https://api.mapbox.com/styles/v1/mapbox/satellite-v9/static/3.093120294433561,55.93323768270082,4,0/300x300@2x?access_token=pk.eyJ1Ijoicm9rYXMxOTIiLCJhIjoiY2t3NmZoMHhkMHBzeTJubnY1dXF3ZDJiOSJ9.vDVsipOXPQAjbOnzzTg5bg';
+  //   img2.src = image_src;
+  //   img2.crossOrigin = "anonymous";
+  //   img2.alt = 'alt text';
+  //   model.predict(img2).then(res => console.log({ res }))
+  //   const prediction = await model.predict(img2);
+  //   console.log(prediction)
+  //   // for (let i = 0; i < maxPredictions; i++) {
+  //   //     const classPrediction =
+  //   //         prediction[i].className + ": " + prediction[i].probability.toFixed(2);
+  //   //     labelContainer.childNodes[i].innerHTML = classPrediction;
+  //   // }
+  // }
 
   const [pos, setPos] = useState([])
   
@@ -117,7 +266,8 @@ export const Map = ({ setInverted }) => {
 
   return (
     <main className='map' onMouseMove={(event) => setPos([event.clientX, event.clientY])}>
-      <img className='image-tile' src={image} />
+      <img crossOrigin='anonymous' id="test" className='image-tile' src={image} />
+      {/* <button onClick={() => predict(image)}>CLICK</button> */}
       {/* <div
         style={{
           width: '200px',
@@ -133,23 +283,37 @@ export const Map = ({ setInverted }) => {
 
       <div
         style={{
-          width: '300px',
+          width: '150px',
           height: '3px',
           position: 'absolute',
           top: pos[1] - 150,
-          left: pos[0] - 150,
+          left: pos[0] - 75,
           backgroundColor: 'white',
           // border: '3px solid white',
           // borderRadius: '20px',
           zIndex: 10,
+          borderRadius: '10px',
         }}
       />
       <div
         style={{
-          width: '300px',
+          width: '150px',
           height: '3px',
           position: 'absolute',
           top: pos[1] + 150,
+          left: pos[0] - 75,
+          backgroundColor: 'white',
+          // border: '3px solid white',
+          // borderRadius: '20px',
+          zIndex: 10,
+        }}
+      />
+      <div
+        style={{
+          width: '3px',
+          height: '150px',
+          position: 'absolute',
+          top: pos[1] - 75,
           left: pos[0] - 150,
           backgroundColor: 'white',
           // border: '3px solid white',
@@ -160,22 +324,9 @@ export const Map = ({ setInverted }) => {
       <div
         style={{
           width: '3px',
-          height: '300px',
+          height: '150px',
           position: 'absolute',
-          top: pos[1] - 150,
-          left: pos[0] - 150,
-          backgroundColor: 'white',
-          // border: '3px solid white',
-          // borderRadius: '20px',
-          zIndex: 10,
-        }}
-      />
-      <div
-        style={{
-          width: '3px',
-          height: '303px',
-          position: 'absolute',
-          top: pos[1] - 150,
+          top: pos[1] - 75,
           left: pos[0] + 150,
           backgroundColor: 'white',
           // border: '3px solid white',
