@@ -87,19 +87,19 @@ export const Map = ({ setInverted }) => {
   //   // }, 5000);
   // }, [image]);
 
-  const predict = () => {
-    classifier = ml5.imageClassifier("https://teachablemachine.withgoogle.com/models/1KhaE1azi/model.json", () => {
-      setStart(true)
-      classifier.classify(document.getElementById('test'), (error, results) => {
-        if (error) {
-          console.error(error);
-          return;
-        }
+  // const predict = () => {
+  //   classifier = ml5.imageClassifier("https://teachablemachine.withgoogle.com/models/1KhaE1azi/model.json", () => {
+  //     setStart(true)
+  //     classifier.classify(document.getElementById('test'), (error, results) => {
+  //       if (error) {
+  //         console.error(error);
+  //         return;
+  //       }
         
-        console.log(results[0].label)
-      });
-    });
-  }
+  //       console.log(results[0].label)
+  //     });
+  //   });
+  // }
 
 
   // console.log(model)
@@ -271,7 +271,7 @@ export const Map = ({ setInverted }) => {
   return (
     <main className='map' onMouseMove={(event) => setPos([event.clientX, event.clientY])}>
       <img crossOrigin='anonymous' id="test" className='image-tile' src={image} />
-      <button onClick={() => predict()}>CLICK</button>
+      <button onClick={() => console.log('Predicting')}>CLICK</button>
       {/* <div
         style={{
           width: '200px',
