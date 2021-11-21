@@ -15,7 +15,7 @@ import { DEFAULT_MAP_CENTER, DEFAULT_MAP_ZOOM, MAP_ZOOM } from 'common/constants
 
 // import * as tf from '@tensorflow/tfjs';
 // import * as tmImage from '@teachablemachine/image';
-import ml5 from 'ml5'
+// import ml5 from 'ml5'
 
 let classifier;
 
