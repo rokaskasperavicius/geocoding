@@ -41,20 +41,23 @@ export const Attributions = () => (
     <div>
       Map tiles by{' '}
       <a
-        title='LocationIQ'
-        target='_blank'
-        rel='noreferrer'
-        href='https://locationiq.com/?ref=link-back'
-      >
-        LocationIQ
-      </a> and {' '}
-      <a
         title='MapTiler'
         target='_blank'
         rel='noreferrer'
         href='https://www.maptiler.com/copyright/'
       >
         MapTiler
+      </a>.
+    </div>
+    <div>
+      Static map by{' '}
+      <a
+        title='Mapbox'
+        target='_blank'
+        rel='noreferrer'
+        href='https://www.mapbox.com/about/maps/'
+      >
+        Mapbox
       </a>.
     </div>
   </main>

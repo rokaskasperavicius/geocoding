@@ -4,4 +4,13 @@ export const MAP_ZOOM = 17
 
 // Outline for selecting the area of map for the capture
 export const OUTLINE_DIM = 200
-export const OUTLINE_BORDER = 3
+export const OUTLINE_BORDER = 2
+
+export const ANALYZER_RESULTS = {
+  'Grass': {
+    'label': 'Grass',
+  },
+  'Water': {
+    'label': 'Water',
+  },
+}
