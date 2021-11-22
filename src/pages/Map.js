@@ -6,15 +6,15 @@ import { useDebounce } from 'use-debounce'
 import { Loader, Outline } from 'components'
 
 // Assets
-import { Streets, Light, Dark, Satellite, Marker } from 'assets/images'
-import { Expand, Target, AnalyzerIcon, MapIcon, OutlineIcon } from 'assets/icons'
+import { Marker } from 'assets/images'
+import { Target, AnalyzerIcon, MapIcon, OutlineIcon, ArrowIcon } from 'assets/icons'
 
 // Common
 import { DEFAULT_MAP_CENTER, DEFAULT_MAP_ZOOM, MAP_ZOOM, ANALYZER_RESULTS } from 'common/constants'
 
 let classifier;
 
-export const Map = ({ setInverted }) => {
+export const Map = () => {
   const [searchValue, setSearchValue] = useState('')
   const [debouncedSearchValue] = useDebounce(searchValue, 400);
 
@@ -26,7 +26,6 @@ export const Map = ({ setInverted }) => {
   const [weatherData, setWeatherData] = useState()
 
   const [markerPosition, setMarkerPosition] = useState()
-  const [mapLayer, setMapLayer] = useState(['satellite', 'png'])
 
   const [currentMapCenter, setCurrentMapCenter] = useState(DEFAULT_MAP_CENTER)
   const [currentMapZoom, setCurrentMapZoom] = useState(DEFAULT_MAP_ZOOM)
@@ -39,14 +38,14 @@ export const Map = ({ setInverted }) => {
   const [isAnalyzing, setIsAnalyzing] = useState(false)
   const [analyzerResults, setAnalyzerResults] = useState()
 
-  const [image, setImage] = useState()
+  const [aoiImage, setAoiImage] = useState()
 
   useEffect(() => {
-    if (isAnalyzerOpen && image) {
+    if (isAnalyzerOpen && aoiImage) {
       setIsAnalyzing(true)
 
       classifier = window.ml5.imageClassifier('https://teachablemachine.withgoogle.com/models/1KhaE1azi/model.json', () => {
-        classifier.classify(document.getElementById('test'), (error, results) => {
+        classifier.classify(document.getElementById('aoi'), (error, results) => {
           if (error) {
             console.error(error);
             return;
@@ -57,13 +56,17 @@ export const Map = ({ setInverted }) => {
         });
       });
     }
-  }, [image, isAnalyzerOpen])
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [aoiImage])
+
+  // useEffect(() => {
+  //   if (isAnalyzerOpen) {
+  //     setIsSearchOpen(false)
+  //   }
+  // }, [isAnalyzerOpen])
 
   const [pos, setPos] = useState([])
-
-  useEffect(() => {
-    setInverted(mapLayer[0] === 'dark')
-  }, [mapLayer, setInverted])
 
   const handleGetCurrentLocation = () => {
     const handleError = () => {
@@ -83,11 +86,13 @@ export const Map = ({ setInverted }) => {
     }, handleError);
   }
 
-  const onTileClick = (latLng) => {
-    fetch(`https://api.mapbox.com/styles/v1/mapbox/satellite-v9/static/${latLng[1]},${latLng[0]},${mapZoom - 1},0/200x200@2x?access_token=pk.eyJ1Ijoicm9rYXMxOTIiLCJhIjoiY2t3NmZoMHhkMHBzeTJubnY1dXF3ZDJiOSJ9.vDVsipOXPQAjbOnzzTg5bg`)
-      .then((res) => setImage(res.url))
-      // .then((data) => console.log(data))
-  }
+  useEffect(() => {
+    if (isAnalyzerOpen && markerPosition) {
+      setAoiImage(`https://api.mapbox.com/styles/v1/mapbox/satellite-v9/static/${markerPosition[1]},${markerPosition[0]},${mapZoom - 1},0/200x200@2x?access_token=pk.eyJ1Ijoicm9rYXMxOTIiLCJhIjoiY2t3NmZoMHhkMHBzeTJubnY1dXF3ZDJiOSJ9.vDVsipOXPQAjbOnzzTg5bg`)
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [markerPosition])
 
   useEffect(() => {
     if (markerPosition) {
@@ -99,23 +104,12 @@ export const Map = ({ setInverted }) => {
   }, [markerPosition])
 
   function mapTiler (x, y, z) {
-    // LocationIQ's free plan does not provide the satellite view
-    if (mapLayer[0] === 'satellite') {
-      if (isAnalyzerOpen) {
-        return `https://api.maptiler.com/tiles/satellite/${z}/${x}/${y}.jpg?key=WiyE10ejQrGObwvuZiuv`
-      }
-
-      return `https://api.maptiler.com/maps/hybrid/${z}/${x}/${y}.jpg?key=WiyE10ejQrGObwvuZiuv`
-
-
-
-      // dont use
-      // https://api.maptiler.com/maps/streets/static/59,52,5/400x400.png?key=WiyE10ejQrGObwvuZiuv
-
-      // 'https://maps.locationiq.com/v3/staticmap?key=pk.3b4a15ec85f3ef7ee440bfac775ab389&center=52,55&zoom=<zoom>&size=300x300&format=png&maptype=streets'
+    return `https://a-tiles.locationiq.com/v3/streets/r/${z}/${x}/${y}.png?key=pk.3b4a15ec85f3ef7ee440bfac775ab389`
+    if (isAnalyzerOpen) {
+      return `https://api.maptiler.com/tiles/satellite/${z}/${x}/${y}.jpg?key=WiyE10ejQrGObwvuZiuv`
     }
 
-    return `https://a-tiles.locationiq.com/v3/${mapLayer[0]}/r/${z}/${x}/${y}.${mapLayer[1]}?key=pk.3b4a15ec85f3ef7ee440bfac775ab389`
+    return `https://api.maptiler.com/maps/hybrid/${z}/${x}/${y}.jpg?key=WiyE10ejQrGObwvuZiuv`
   }
 
   useEffect(() => {
@@ -141,79 +135,71 @@ export const Map = ({ setInverted }) => {
 
   return (
     <main className='map' onMouseMove={(event) => setPos([event.clientX, event.clientY])}>
-      {isAnalyzerOpen && image && (
-        <img id='test' crossOrigin='anonymous' src={image} className='image-tile'/>
+      {isAnalyzerOpen && aoiImage && (
+        <img
+          id='aoi'
+          src={aoiImage}
+          alt='aoi'
+          crossOrigin='anonymous'
+          className='aoi'
+        />
       )}
-      {/* <div
-        style={{
-          width: '200px',
-          height: '200px',
-          position: 'absolute',
-          top: pos[1] - 100,
-          left: pos[0] - 100,
-          backgroundColor: 'red',
-          // border: '3px solid white',
-          // borderRadius: '20px',
-          zIndex: 9,
-        }}
-      /> */}
       <Outline
         isShown={isOutlineClicked && isAnalyzerOpen}
         position={pos}
       />
-      <div className={`search-sidebar${isSearchOpen ? ' search-sidebar--opened' : ''}`}>
-        {!isAnalyzerOpen && (
-          <img
-            src={Expand}
-            alt='expand icon'
-            className='expand-icon'
-            onClick={() => setIsSearchOpen(!isSearchOpen)}
-          />
-        )}
-        <div className='search-content__wrapper'>
-          <div className='search-content'>
-            <div className='input-wrapper'>
-              <img
-                onClick={handleGetCurrentLocation}
-                alt='location icon'
-                className='input-icon'
-                src={Target}
-              />
-              <input
-                value={searchValue}
-                onChange={(e) => setSearchValue(e.target.value)}
-                placeholder='Search for an address'
-              />
-            </div>
-
-            <Loader
-              isLoading={isLoading}
+      {!isAnalyzerOpen && (
+        <div className={`search-sidebar${isSearchOpen ? ' search-sidebar--opened' : ''}`}>
+          <div className='exand-icon__wrapper'>
+            <img
+              src={ArrowIcon}
+              alt='expand icon'
+              className='expand-icon'
+              onClick={() => setIsSearchOpen(!isSearchOpen)}
             />
-
-            {searchResults.length > 0 && !isLoading && (
-              <div className='search-results'>
-                {searchResults.map(({ display_name, lat, lon }) => (
-                  <div className='search-result' onClick={() => {
-                    setMarkerPosition([lat, lon])
-                    setCurrentMapCenter([lat, lon])
-                    setCurrentMapZoom(MAP_ZOOM)
-                  }}>{display_name}</div>
-                ))}
+          </div>
+          <div className='search-content__wrapper'>
+            <div className='search-content'>
+              <div className='input-wrapper'>
+                <img
+                  onClick={handleGetCurrentLocation}
+                  alt='location icon'
+                  className='input-icon'
+                  src={Target}
+                />
+                <input
+                  value={searchValue}
+                  onChange={(e) => setSearchValue(e.target.value)}
+                  placeholder='Search for an address'
+                />
               </div>
-            )}
-
-            {searchResults.error && !isLoading && (
-              <div className='empty-search'>No address found</div>
-            )}
+              <Loader
+                isLoading={isLoading}
+              />
+              {searchResults.length > 0 && !isLoading && (
+                <div className='search-results'>
+                  {searchResults.map(({ display_name, lat, lon }) => (
+                    <div className='search-result' onClick={() => {
+                      setMarkerPosition([lat, lon])
+                      setCurrentMapCenter([lat, lon])
+                      setCurrentMapZoom(MAP_ZOOM)
+                    }}>{display_name}</div>
+                  ))}
+                </div>
+              )}
+              {searchResults.error && !isLoading && (
+                <div className='empty-search'>No address found</div>
+              )}
+            </div>
           </div>
         </div>
-      </div>
+      )}
       <div className='map-wrapper'>
         <PigeonMap
           mouseEvents={!isAnalyzing}
           touchEvents={!isAnalyzing}
           provider={mapTiler}
-          attribution={mapLayer[0] === 'satellite' && (
+          attribution={(
             <>
               <a
                 title='MapTiler'
@@ -234,9 +220,7 @@ export const Map = ({ setInverted }) => {
               </a>
             </>
           )}
-          onClick={({ latLng, ...props }) => {
-            onTileClick(latLng)
-            // console.log(latLng, props)
+          onClick={({ latLng }) => {
             setMarkerPosition(latLng)
             setCurrentMapCenter(mapCenter)
             setCurrentMapZoom(mapZoom)
@@ -262,7 +246,7 @@ export const Map = ({ setInverted }) => {
         </PigeonMap>
         {markerPosition && !isSearchOpen && !isAnalyzerOpen && (
           <div className='position'>
-            <pre><strong>Lat:</strong> {parseFloat(markerPosition[0]).toFixed(5)}  |  <strong>Lon:</strong> {parseFloat(markerPosition[1]).toFixed(5)}</pre>
+            <pre>Lat: {parseFloat(markerPosition[0]).toFixed(5)}  |  Lon: {parseFloat(markerPosition[1]).toFixed(5)}</pre>
           </div>
         )}
         {weatherData && !isAnalyzerOpen && (
@@ -289,7 +273,7 @@ export const Map = ({ setInverted }) => {
           <div className='analyzer-results__wrapper'>
             {!isAnalyzing && (
               <div className='analyzer-results'>
-                {image ? (
+                {aoiImage ? (
                   <>
                     <p>Info</p>
                     <p>Type: {analyzerResults?.label || 'Not found'}</p>
@@ -316,5 +300,3 @@ export const Map = ({ setInverted }) => {
     </main>
   );
 }
-
-

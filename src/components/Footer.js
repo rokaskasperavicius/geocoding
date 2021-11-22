@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 export const Footer = () => (
   <footer className='footer'>
     <div>
-      &copy; 2021 Geocoding. All Rights Reserved.
+      &copy; {new Date().getFullYear()} Geocoding. All Rights Reserved.
     </div>
     <div className='credits'>
       <div>

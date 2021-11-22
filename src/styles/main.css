@@ -1,5 +1,4 @@
 body {
-  --inverted-bg-color: #666666;
   --white: white;
   --black: black;
   --blue: blue;
@@ -11,7 +10,7 @@ body {
   background-color: var(--white)
 }
 
-.image-tile {
+.aoi {
   width: 200px;
   height: 200px;
 
@@ -47,10 +46,6 @@ body {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-}
-
-.content.content--inverted input {
-  background-color: var(--inverted-bg-color);
 }
 
 main {
@@ -100,15 +95,6 @@ input:focus-visible {
   color: var(--white);
 }
 
-.content.content--inverted footer {
-  color: var(--black);
-  background-color: var(--inverted-bg-color);
-}
-
-.content.content--inverted footer a {
-  color: var(--black);
-}
-
 .pigeon-attribution {
   left: 10px !important;
   bottom: 1px !important;
@@ -125,17 +111,9 @@ input:focus-visible {
 }
 
 .pigeon-zoom-in, .pigeon-zoom-out {
+  font-weight: normal !important;
   color: var(--white) !important;
   background-color: rgba(0, 0, 0, 0.7) !important;
-}
-
-.content.content--inverted .pigeon-zoom-in, .content.content--inverted .pigeon-zoom-out {
-  color: var(--black) !important;
-  background-color: rgba(255, 255, 255, 0.4) !important;
-}
-
-.content.content--inverted .pigeon-zoom-in:hover, .content.content--inverted .pigeon-zoom-out:hover {
-  background-color: rgba(255, 255, 255, 0.5) !important;
 }
 
 .pigeon-zoom-in:hover, .pigeon-zoom-out:hover {
@@ -173,82 +151,6 @@ input:focus-visible {
   position: relative;
 
   margin-bottom: 20px;
-}
-
-.map-layers {
-  font-size: 12px;
-  position: absolute;
-  bottom: 10px;
-  left: 10px;
-  display: flex;
-  padding: 10px;
-  padding-right: 20px;
-  padding-left: 20px;
-  border-radius: 10px;
-  gap: 10px;
-  z-index: 10;
-
-  opacity: 0;
-  transition: opacity 0.5s ease-in-out;
-}
-
-.map-layers.map-layers--opened {
-  opacity: 1;
-}
-
-.content.content--inverted .map-layers-background {
-  background-color: var(--white);
-}
-
-.map-layers span {
-  color: var(--white);
-  text-align: center;
-  margin-top: 5px;
-}
-
-.content.content--inverted .map-layers span {
-  color: var(--black);
-}
-
-.map-layers img {
-  cursor: pointer;
-  width: 60px;
-  height: 60px;
-  border-radius: 10px;
-  transform: none;
-  transition: transform 0.1s ease-in-out;
-}
-
-.map-layers img:hover {
-  transform: scale3d(1.1, 1.1, 1.1);
-}
-
-.map-layers-background {
-  position: absolute;
-  width: 100px;
-  height: 100px;
-  bottom: 10px;
-  left: 10px;
-
-  background-color: var(--black);
-
-  border-radius: 10px;
-
-  opacity: 0;
-  transition: opacity 0.5s ease-in-out;
-}
-
-.map-layers-background.map-layers-background--opened {
-  opacity: 0.7;
-}
-
-.content.content--inverted .map-layers-background.map-layers-background--opened {
-  opacity: 0.4;
-}
-
-.map-layers > div {
-  display: flex;
-  flex-direction: column;
 }
 
 .search-results {
@@ -317,9 +219,7 @@ body {
   background-color: rgba(0, 0, 0, 0.8);
   width: 0px;
 
-  transition: all 0.5s ease-in-out;
-
-  border-right: 2px solid black;
+  transition: all 1s ease-in-out;
 
   z-index: 999;
 
@@ -343,7 +243,6 @@ body {
 }
 
 .temperature {
-  font-weight: bold;
   position: absolute;
   right: 10px;
   top: 10px;
@@ -358,27 +257,30 @@ body {
   z-index: 99;
 }
 
-.content.content--inverted .temperature {
-  color: var(--black);
-  background-color: rgba(255, 255, 255, 0.4);
-}
-
-.expand-icon {
+.exand-icon__wrapper {
   width: 50px;
   height: 50px;
   position: absolute;
-  top: 50%;
   transform: translateY(-50%);
+  top: 50%;
   right: -60px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 23px;
-
   background-color: rgba(0, 0, 0, 0.7);
   border-radius: 10px;
   cursor: pointer;
   z-index: 999;
+}
+
+.exand-icon__wrapper:hover {
+  background-color: rgba(0, 0, 0, 0.8);
+}
+
+.search-sidebar--opened .expand-icon {
+  transform: rotateY(0deg);
+}
+
+.expand-icon {
+  transition: transform 1.5s ease-in-out;
+  transform: rotateY(180deg);
 }
 
 .analyzer-icon {
@@ -413,10 +315,6 @@ body {
   background-color: rgba(0, 0, 0, 1) !important;
 }
 
-.expand-icon:hover {
-  background-color: rgba(0, 0, 0, 0.8);
-}
-
 .position {
   position: absolute;
   top: 10px;
@@ -431,15 +329,14 @@ body {
   left: 10px;
 }
 
-.content.content--inverted .position {
-  color: var(--black);
-  background-color: rgba(255, 255, 255, 0.4);
-}
-
 .credits {
   display: flex;
   flex-direction: column;
   gap: 5px;
+}
+
+.credits > div:first-child {
+  text-align: right;
 }
 
 .credits__atributions {
