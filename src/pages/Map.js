@@ -100,7 +100,7 @@ export const Map = ({ setInverted }) => {
         return `https://api.maptiler.com/tiles/satellite/${z}/${x}/${y}.jpg?key=WiyE10ejQrGObwvuZiuv`
       }
 
-      return `https://api.maptiler.com/maps/hybrid/${z}/${x}/${y}@2x.jpg?key=WiyE10ejQrGObwvuZiuv`
+      return `https://api.maptiler.com/maps/hybrid/${z}/${x}/${y}.jpg?key=WiyE10ejQrGObwvuZiuv`
 
 
 
