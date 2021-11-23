@@ -17,7 +17,6 @@ import {
   DEFAULT_MAP_CENTER,
   DEFAULT_MAP_ZOOM,
   MAP_ZOOM,
-  ANALYZER_RESULTS,
 } from 'common/constants'
 
 // Components
@@ -38,14 +37,10 @@ export const Map = () => {
 
   const [markerPosition, setMarkerPosition] = useState()
 
-  const [currentMapCenter, setCurrentMapCenter] = useState(DEFAULT_MAP_CENTER)
-  const [currentMapZoom, setCurrentMapZoom] = useState(DEFAULT_MAP_ZOOM)
-
-  const [mapCenter, setMapCenter] = useState(currentMapCenter)
-  const [mapZoom, setMapZoom] = useState(currentMapZoom)
+  const [mapCenter, setMapCenter] = useState(DEFAULT_MAP_CENTER)
+  const [mapZoom, setMapZoom] = useState(DEFAULT_MAP_ZOOM)
 
   const [isOutlineClicked, setIsOutlineClicked] = useState(false)
-
 
   const [isAnalyzerOpen, setIsAnalyzerOpen] = useState(false)
   const [isAnalyzing, setIsAnalyzing] = useState(false)
@@ -57,14 +52,13 @@ export const Map = () => {
     if (isAnalyzerOpen && aoiImage) {
       setIsAnalyzing(true)
 
-      classifier = window.ml5.imageClassifier('https://teachablemachine.withgoogle.com/models/1KhaE1azi/model.json', () => {
+      classifier = window.ml5.imageClassifier('https://teachablemachine.withgoogle.com/models/eCYC_iBuQ6/model.json', () => {
         classifier.classify(document.getElementById('aoi'), (error, results) => {
           if (error) {
-            console.error(error);
-            return;
+            console.error(error)
           }
 
-          setAnalyzerResults(ANALYZER_RESULTS[results[0].label])
+          setAnalyzerResults(results)
           setIsAnalyzing(false)
         });
       });
@@ -86,8 +80,8 @@ export const Map = () => {
 
     navigator.geolocation.getCurrentPosition(({ coords: { latitude, longitude } }) => {
       setMarkerPosition([latitude, longitude])
-      setCurrentMapCenter([latitude, longitude])
-      setCurrentMapZoom(MAP_ZOOM)
+      setMapCenter([latitude, longitude])
+      setMapZoom(MAP_ZOOM)
 
       setIsLoading(false)
     }, handleError);
@@ -111,6 +105,7 @@ export const Map = () => {
   }, [markerPosition])
 
   function mapTiler (x, y, z) {
+    return `https://a-tiles.locationiq.com/v3/streets/r/${z}/${x}/${y}.png?key=pk.3b4a15ec85f3ef7ee440bfac775ab389`
     if (isAnalyzerOpen) {
       return `https://api.maptiler.com/tiles/satellite/${z}/${x}/${y}.jpg?key=WiyE10ejQrGObwvuZiuv`
     }
@@ -184,12 +179,18 @@ export const Map = () => {
               />
               {searchResults.length > 0 && !isLoading && (
                 <div className='search-results'>
-                  {searchResults.map(({ display_name, lat, lon }) => (
-                    <div className='search-result' onClick={() => {
-                      setMarkerPosition([lat, lon])
-                      setCurrentMapCenter([lat, lon])
-                      setCurrentMapZoom(MAP_ZOOM)
-                    }}>{display_name}</div>
+                  {searchResults.map(({ display_name, lat, lon }, index) => (
+                    <div
+                      key={index}
+                      className='search-result'
+                      onClick={() => {
+                        setMarkerPosition([lat, lon])
+                        setMapCenter([lat, lon])
+                        setMapZoom(MAP_ZOOM)
+                      }}
+                    >
+                      {display_name}
+                    </div>
                   ))}
                 </div>
               )}
@@ -228,15 +229,9 @@ export const Map = () => {
           )}
           onClick={({ latLng }) => {
             setMarkerPosition(latLng)
-            setCurrentMapCenter(mapCenter)
-            setCurrentMapZoom(mapZoom)
           }}
-          onBoundsChanged={({ center, zoom }) => { 
-            setMapCenter(center)
-            setMapZoom(zoom)
-          }} 
-          center={currentMapCenter}
-          zoom={currentMapZoom}
+          center={mapCenter}
+          zoom={mapZoom}
           metaWheelZoom={true}
         >
           {markerPosition && (
@@ -282,7 +277,16 @@ export const Map = () => {
                 {aoiImage ? (
                   <>
                     <p>Info</p>
-                    <p>Type: {analyzerResults?.label || 'Not found'}</p>
+                    {analyzerResults ? (
+                      analyzerResults.map(({ label, confidence }) => (
+                        <div>
+                          <p>Type: {label}</p>
+                          <p>Confidence: {confidence.toFixed(3)}</p>
+                        </div>
+                      ))
+                    ) : (
+                      <p>Not found</p>
+                    )}
                   </>
                 ) : (
                   <p>Select AOI</p>

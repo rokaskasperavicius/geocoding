@@ -1,5 +1,5 @@
 export const Attributions = () => (
-  <main className='attributions'>
+  <div>
     <div>
       Search by{' '}
       <a
@@ -90,5 +90,5 @@ export const Attributions = () => (
         www.flaticon.com
       </a>.
     </div>
-  </main>
+  </div>
 )

@@ -1,3 +1,4 @@
+export { Attributions } from './Attributions'
 export { Footer } from './Footer'
 export { Layout } from './Layout'
 export { Loader } from './Loader'
