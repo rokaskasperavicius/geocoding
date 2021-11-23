@@ -2,15 +2,26 @@ import { useEffect, useState } from 'react'
 import { Map as PigeonMap, ZoomControl, Overlay } from 'pigeon-maps'
 import { useDebounce } from 'use-debounce'
 
-// Components
-import { Loader, Outline } from 'components'
-
 // Assets
 import { Marker } from 'assets/images'
-import { Target, AnalyzerIcon, MapIcon, OutlineIcon, ArrowIcon } from 'assets/icons'
+import {
+  AnalyzerIcon,
+  ArrowIcon,
+  MapIcon,
+  OutlineIcon,
+  TargetIcon,
+} from 'assets/icons'
 
 // Common
-import { DEFAULT_MAP_CENTER, DEFAULT_MAP_ZOOM, MAP_ZOOM, ANALYZER_RESULTS } from 'common/constants'
+import {
+  DEFAULT_MAP_CENTER,
+  DEFAULT_MAP_ZOOM,
+  MAP_ZOOM,
+  ANALYZER_RESULTS,
+} from 'common/constants'
+
+// Components
+import { Loader, Outline } from 'components'
 
 let classifier;
 
@@ -33,8 +44,10 @@ export const Map = () => {
   const [mapCenter, setMapCenter] = useState(currentMapCenter)
   const [mapZoom, setMapZoom] = useState(currentMapZoom)
 
-  const [isAnalyzerOpen, setIsAnalyzerOpen] = useState(false)
   const [isOutlineClicked, setIsOutlineClicked] = useState(false)
+
+
+  const [isAnalyzerOpen, setIsAnalyzerOpen] = useState(false)
   const [isAnalyzing, setIsAnalyzing] = useState(false)
   const [analyzerResults, setAnalyzerResults] = useState()
 
@@ -59,12 +72,6 @@ export const Map = () => {
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [aoiImage])
-
-  // useEffect(() => {
-  //   if (isAnalyzerOpen) {
-  //     setIsSearchOpen(false)
-  //   }
-  // }, [isAnalyzerOpen])
 
   const [pos, setPos] = useState([])
 
@@ -104,7 +111,6 @@ export const Map = () => {
   }, [markerPosition])
 
   function mapTiler (x, y, z) {
-    return `https://a-tiles.locationiq.com/v3/streets/r/${z}/${x}/${y}.png?key=pk.3b4a15ec85f3ef7ee440bfac775ab389`
     if (isAnalyzerOpen) {
       return `https://api.maptiler.com/tiles/satellite/${z}/${x}/${y}.jpg?key=WiyE10ejQrGObwvuZiuv`
     }
@@ -165,7 +171,7 @@ export const Map = () => {
                   onClick={handleGetCurrentLocation}
                   alt='location icon'
                   className='input-icon'
-                  src={Target}
+                  src={TargetIcon}
                 />
                 <input
                   value={searchValue}

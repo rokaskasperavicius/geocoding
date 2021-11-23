@@ -13,4 +13,5 @@
 ## APIs
 1. Weather - https://openweathermap.org/
 2. Location search - https://locationiq.com/
-3. Map Tiles - https://locationiq.com/ and https://www.maptiler.com
+3. Map Tiles - https://www.maptiler.com
+4. Area classification - https://ml5js.org/

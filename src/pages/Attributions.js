@@ -1,22 +1,6 @@
 export const Attributions = () => (
   <main className='attributions'>
     <div>
-      Icons made by{' '}
-      <a
-        href='https://www.freepik.com'
-        title='Freepik'
-      >
-        Freepik
-      </a>{' '}
-      from{' '}
-      <a
-        href='https://www.flaticon.com/'
-        title='Flaticon'
-      >
-        www.flaticon.com
-      </a>.
-    </div>
-    <div>
       Search by{' '}
       <a
         title='LocationIQ'
@@ -58,6 +42,52 @@ export const Attributions = () => (
         href='https://www.mapbox.com/about/maps/'
       >
         Mapbox
+      </a>.
+    </div>
+    <div>
+      Area classification by{' '}
+      <a
+        title='ml5.js'
+        target='_blank'
+        rel='noreferrer'
+        href='https://ml5js.org/'
+      >
+        ml5.js
+      </a>.
+    </div>
+    <div>
+      <a
+        title='Target Icon in Line Style'
+        target='_blank'
+        rel='noreferrer'
+        href='https://iconscout.com/icon/target-1440303'
+      >
+        Target Icon in Line Style
+      </a>
+      {' '}by{' '}
+      <a
+        title='Unicons Font'
+        target='_blank'
+        rel='noreferrer'
+        href='https://iconscout.com/contributors/unicons'
+      >
+        Unicons Font
+      </a>.
+    </div>
+    <div>
+      Icons made by{' '}
+      <a
+        href='https://www.freepik.com'
+        title='Freepik'
+      >
+        Freepik
+      </a>{' '}
+      from{' '}
+      <a
+        href='https://www.flaticon.com/'
+        title='Flaticon'
+      >
+        www.flaticon.com
       </a>.
     </div>
   </main>
