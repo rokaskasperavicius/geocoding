@@ -37,8 +37,11 @@ export const Map = () => {
 
   const [markerPosition, setMarkerPosition] = useState()
 
-  const [mapCenter, setMapCenter] = useState(DEFAULT_MAP_CENTER)
-  const [mapZoom, setMapZoom] = useState(DEFAULT_MAP_ZOOM)
+  const [currentMapCenter, setCurrentMapCenter] = useState(DEFAULT_MAP_CENTER)
+  const [currentMapZoom, setCurrentMapZoom] = useState(DEFAULT_MAP_ZOOM)
+
+  const [mapCenter, setMapCenter] = useState(currentMapCenter)
+  const [mapZoom, setMapZoom] = useState(currentMapZoom)
 
   const [isOutlineClicked, setIsOutlineClicked] = useState(false)
 
@@ -49,9 +52,11 @@ export const Map = () => {
   const [aoiImage, setAoiImage] = useState()
 
   useEffect(() => {
+    // If the image changes - run the area classification
     if (isAnalyzerOpen && aoiImage) {
       setIsAnalyzing(true)
 
+      // Code taken and refactored from Google Teachable Machine
       classifier = window.ml5.imageClassifier('https://teachablemachine.withgoogle.com/models/eCYC_iBuQ6/model.json', () => {
         classifier.classify(document.getElementById('aoi'), (error, results) => {
           if (error) {
@@ -80,8 +85,8 @@ export const Map = () => {
 
     navigator.geolocation.getCurrentPosition(({ coords: { latitude, longitude } }) => {
       setMarkerPosition([latitude, longitude])
-      setMapCenter([latitude, longitude])
-      setMapZoom(MAP_ZOOM)
+      setCurrentMapCenter([latitude, longitude])
+      setCurrentMapZoom(MAP_ZOOM)
 
       setIsLoading(false)
     }, handleError);
@@ -105,7 +110,9 @@ export const Map = () => {
   }, [markerPosition])
 
   function mapTiler (x, y, z) {
-    return `https://a-tiles.locationiq.com/v3/streets/r/${z}/${x}/${y}.png?key=pk.3b4a15ec85f3ef7ee440bfac775ab389`
+    // Use this street view if mapTiler reaches the free plan limit
+    // return `https://a-tiles.locationiq.com/v3/streets/r/${z}/${x}/${y}.png?key=pk.3b4a15ec85f3ef7ee440bfac775ab389`
+
     if (isAnalyzerOpen) {
       return `https://api.maptiler.com/tiles/satellite/${z}/${x}/${y}.jpg?key=WiyE10ejQrGObwvuZiuv`
     }
@@ -185,8 +192,8 @@ export const Map = () => {
                       className='search-result'
                       onClick={() => {
                         setMarkerPosition([lat, lon])
-                        setMapCenter([lat, lon])
-                        setMapZoom(MAP_ZOOM)
+                        setCurrentMapCenter([lat, lon])
+                        setCurrentMapZoom(MAP_ZOOM)
                       }}
                     >
                       {display_name}
@@ -229,9 +236,15 @@ export const Map = () => {
           )}
           onClick={({ latLng }) => {
             setMarkerPosition(latLng)
+            setCurrentMapCenter(mapCenter)
+            setCurrentMapZoom(mapZoom)
           }}
-          center={mapCenter}
-          zoom={mapZoom}
+          onBoundsChanged={({ center, zoom }) => { 
+            setMapCenter(center)
+            setMapZoom(zoom)
+          }}
+          center={currentMapCenter}
+          zoom={currentMapZoom}
           metaWheelZoom={true}
         >
           {markerPosition && (
