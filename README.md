@@ -1,5 +1,5 @@
 # Geocoding
-[website](http://geocoding-digital-systems.herokuapp.com)
+[Website](http://geocoding-digital-systems.herokuapp.com)
 
 ## Requirements
 
