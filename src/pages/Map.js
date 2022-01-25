@@ -28,6 +28,8 @@ export const Map = () => {
   const [searchValue, setSearchValue] = useState('')
   const [debouncedSearchValue] = useDebounce(searchValue, 400);
 
+  console.log("T111")
+
   const [searchResults, setSearchResults] = useState([])
   const [isSearchOpen, setIsSearchOpen] = useState(false)
 
