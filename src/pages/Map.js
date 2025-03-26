@@ -96,7 +96,7 @@ export const Map = () => {
 
   useEffect(() => {
     if (isAnalyzerOpen && markerPosition) {
-      setAoiImage(`https://api.mapbox.com/styles/v1/mapbox/satellite-v9/static/${markerPosition[1]},${markerPosition[0]},${mapZoom - 1},0/200x200@2x?access_token=pk.eyJ1Ijoicm9rYXMxOTIiLCJhIjoiY2t3NmZoMHhkMHBzeTJubnY1dXF3ZDJiOSJ9.vDVsipOXPQAjbOnzzTg5bg`)
+      setAoiImage(`https://api.mapbox.com/styles/v1/mapbox/satellite-v9/static/${markerPosition[1]},${markerPosition[0]},${mapZoom - 1},0/200x200@2x?access_token=REDACTED`)
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
