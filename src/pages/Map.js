@@ -116,15 +116,15 @@ export const Map = () => {
     // return `https://a-tiles.locationiq.com/v3/streets/r/${z}/${x}/${y}.png?key=pk.3b4a15ec85f3ef7ee440bfac775ab389`
 
     if (isAnalyzerOpen) {
-      return `https://api.maptiler.com/tiles/satellite/${z}/${x}/${y}.jpg?key=WiyE10ejQrGObwvuZiuv`
+      return `https://api.maptiler.com/tiles/satellite/${z}/${x}/${y}.jpg?key=REDACTED`
     }
 
-    return `https://api.maptiler.com/maps/hybrid/${z}/${x}/${y}.jpg?key=WiyE10ejQrGObwvuZiuv`
+    return `https://api.maptiler.com/maps/hybrid/${z}/${x}/${y}.jpg?key=REDACTED`
   }
 
   useEffect(() => {
     if (debouncedSearchValue.length > 0) {
-      fetch(`https://eu1.locationiq.com/v1/search.php?key=pk.3b4a15ec85f3ef7ee440bfac775ab389&q=${debouncedSearchValue}&format=json`)
+      fetch(`https://eu1.locationiq.com/v1/search.php?key=REDACTED&q=${debouncedSearchValue}&format=json`)
         .then(res => res.json())
         .then(data => setSearchResults(data))
         .catch((err) => console.error(err))
